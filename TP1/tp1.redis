@@ -1,0 +1,23 @@
+SET count "0"
+set wp https://www.wikipedia.org
+INCR count
+set fm https://framagit.org
+INCR count
+set wl https://wikileaks.org
+INCR count
+
+get wp
+get fm
+get wl
+
+mset wp https://www.wikipedia.org fm https://framagit.org wl https://wikileaks.org
+
+mget wp https://www.wikipedia.org fm https://framagit.org wl https://wikileaks.org
+
+MULTI
+SET wp https://www.starfoulah.org
+INCR count
+EXEC
+
+HMSET user:1 “name” : “Barney Stinson”
+HMSET "password" : "secret"
