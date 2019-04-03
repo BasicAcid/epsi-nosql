@@ -1,0 +1,8 @@
+* NoSQL REST Notes
+
+| HTTP Method | URI                                  | Action              |
+|-------------+--------------------------------------+---------------------|
+| GET         | http://localhost:8080/notes          | Retrieve all notes  |
+| POST        | http://localhost:8080/notes          | Create a note       |
+| GET         | http://localhost:8080/notes/{idnote} | Retrieve note by id |
+| DELETE      | http://localhost:8080/notes/{idnote} | Delete note by id   |
