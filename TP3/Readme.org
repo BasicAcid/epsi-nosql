@@ -1,5 +1,7 @@
 * NoSQL REST Notes
+Participants: David Tabarie, Victor Goncalves
 
+** HTTP Requests
 | HTTP Method | URI                                  | Action              |
 |-------------+--------------------------------------+---------------------|
 | GET         | http://localhost:8080/notes          | Retrieve all notes  |
