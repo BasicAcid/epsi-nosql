@@ -1,10 +1,50 @@
 * NoSQL REST Notes
 Participants: David Tabarie, Victor Goncalves
 
-** HTTP Requests
-| HTTP Method | URI                                  | Action              |
-|-------------+--------------------------------------+---------------------|
-| GET         | http://localhost:8080/notes          | Retrieve all notes  |
-| POST        | http://localhost:8080/notes          | Create a note       |
-| GET         | http://localhost:8080/notes/{idnote} | Retrieve note by id |
-| DELETE      | http://localhost:8080/notes/{idnote} | Delete note by id   |
+** Architecture de l'application
+Notre application est écrite en python3 avec le framework Flask.
+
+La  première étape est de créer un objet permettant la connexion à la base Redis:
+
+#+BEGIN_SRC python
+r = redis.Redis(
+    host='localhost',
+    port=6379,
+    password='')
+#+END_SRC
+
+Voici une descriptions des fonctions:
+- index
+- get_all
+- new_note
+- get_note
+- delete_all
+
+** Usage
+
+*** HTTP Requests
+Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes associées
+
+| HTTP Method | URI                                  | Action                                  |
+|-------------+--------------------------------------+-----------------------------------------|
+| GET         | http://localhost:8080                | Redirect to http://localhost:8080/notes |
+| GET         | http://localhost:8080/notes          | Retrieve all notes                      |
+| POST        | http://localhost:8080/notes          | Create a note                           |
+| GET         | http://localhost:8080/notes/{idnote} | Retrieve note by id                     |
+| DELETE      | http://localhost:8080/notes/{idnote} | Delete note by id                       |
+
+*** Exemples d'utilisation
+- Récupérer la liste des notes disponibles (par id):
+#+BEGIN_SRC bash
+curl 127.0.0.1:8080/notes/
+#+END_SRC
+
+- Créer une note:
+#+BEGIN_SRC bash
+curl -H "Content-Type:text/plain" --data 'Penser au pain' 127.0.0.1:8080/notes/
+#+END_SRC
+
+- Lire une note:
+#+BEGIN_SRC bash
+curl http://localhost:8080/notes/{idnote}
+#+END_SRC

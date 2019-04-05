@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
-import redis, http, sys
+import redis
+from redis import RedisError
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from flask import Flask, jsonify, request, redirect, url_for, make_response
 
@@ -9,13 +10,13 @@ r = redis.Redis(
     port=6379,
     password='')
 
-# Clear the database
+# Clear the database, used for debuging, commented for security purposes
 r.flushdb()
 
 # Debug insertions
-r.lpush('lst_notes', 'note_victor')
-r.lpush('lst_notes', 'note_david')
-r.lpush('lst_notes', 'note_pataya')
+# r.lpush('lst_notes', 'note_victor')
+# r.lpush('lst_notes', 'note_david')
+# r.lpush('lst_notes', 'note_pataya')
 
 app = Flask(__name__)
 
@@ -45,9 +46,9 @@ def get_note(idnote):
     return r.lindex('lst_notes', idnote)
 
 @app.route('/notes/idnote', methods=['DELETE'])
-def delete_note(idnote):
-    r.lrem('lst_notes', 0, idnote)
-    return 'ok'
+def delete_all(idnote):
+    """Delete all notes"""
+    r.flushdb()
 
 @app.errorhandler(404)
 def not_found(error):
