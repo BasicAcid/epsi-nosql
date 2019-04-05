@@ -14,13 +14,18 @@ r = redis.Redis(
 #+END_SRC
 
 Voici une descriptions des fonctions:
-- index
-- get_all
-- new_note
-- get_note
-- delete_all
+| fonction   | action                                        |
+|------------+-----------------------------------------------|
+| index      | redirige l'utilisateur sur la liste des notes |
+| get_all    | retourne toutes les notes                     |
+| new_note   | créé une note                                 |
+| get_note   | retourne la note correspondante               |
+| delete_all | supprime toutes les notes                     |
 
-** Usage
+
+Note: nous n'avons pas implémenté la suppression unitaire de note car
+nous avons utilisés une liste, il faudrait donc revoir le code pour
+utiliser des hash.
 
 *** HTTP Requests
 Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes associées
@@ -32,6 +37,15 @@ Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes a
 | POST        | http://localhost:8080/notes          | Create a note                           |
 | GET         | http://localhost:8080/notes/{idnote} | Retrieve note by id                     |
 | DELETE      | http://localhost:8080/notes/{idnote} | Delete note by id                       |
+
+
+** Utilisation
+
+*** Installation
+Avec pip3:
+#+BEGIN_SRC bash
+pip install -r requirements.txt
+#+END_SRC
 
 *** Exemples d'utilisation
 - Récupérer la liste des notes disponibles (par id):
