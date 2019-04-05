@@ -10,13 +10,8 @@ r = redis.Redis(
     port=6379,
     password='')
 
-# Clear the database, used for debuging, commented for security purposes
-r.flushdb()
-
-# Debug insertions
-# r.lpush('lst_notes', 'note_victor')
-# r.lpush('lst_notes', 'note_david')
-# r.lpush('lst_notes', 'note_pataya')
+# Clear the database, used for debugging, commented for security purposes
+# r.flushdb()
 
 app = Flask(__name__)
 
@@ -27,6 +22,7 @@ def index():
 
 @app.route('/notes/', methods=['GET'])
 def get_all():
+    """Get all notes"""
     content = []
     alist = []
     content.append(r.lrange('lst_notes', 0, -1))
@@ -38,21 +34,14 @@ def get_all():
 
 @app.route('/notes/', methods=['POST'])
 def new_note():
+    """Create a note"""
     r.rpush('lst_notes', request.data)
-    return 'ok'
+    return 'New note created !'
 
 @app.route('/notes/<int:idnote>', methods=['GET'])
 def get_note(idnote):
+    """Get specific note"""
     return r.lindex('lst_notes', idnote)
-
-@app.route('/notes/idnote', methods=['DELETE'])
-def delete_all(idnote):
-    """Delete all notes"""
-    r.flushdb()
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)

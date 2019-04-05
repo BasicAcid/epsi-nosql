@@ -2,9 +2,10 @@
 Participants: David Tabarie, Victor Goncalves
 
 ** Architecture de l'application
-Notre application est écrite en python3 avec le framework Flask.
+Notre application est écrite en python3 avec le framework Flask, voici
+une explication du code:
 
-La  première étape est de créer un objet permettant la connexion à la base Redis:
+La première étape est de créer un objet permettant la connexion à la base Redis:
 
 #+BEGIN_SRC python
 r = redis.Redis(
@@ -20,15 +21,13 @@ Voici une descriptions des fonctions:
 | get_all    | retourne toutes les notes                     |
 | new_note   | créé une note                                 |
 | get_note   | retourne la note correspondante               |
-| delete_all | supprime toutes les notes                     |
-
 
 Note: nous n'avons pas implémenté la suppression unitaire de note car
 nous avons utilisés une liste, il faudrait donc revoir le code pour
 utiliser des hash.
 
 *** HTTP Requests
-Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes associées
+Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes associées.
 
 | HTTP Method | URI                                  | Action                                  |
 |-------------+--------------------------------------+-----------------------------------------|
@@ -36,29 +35,55 @@ Voici la liste des requêtes http que nous utilisons, ainsi que leur méthodes a
 | GET         | http://localhost:8080/notes          | Retrieve all notes                      |
 | POST        | http://localhost:8080/notes          | Create a note                           |
 | GET         | http://localhost:8080/notes/{idnote} | Retrieve note by id                     |
-| DELETE      | http://localhost:8080/notes/{idnote} | Delete note by id                       |
-
 
 ** Utilisation
 
-*** Installation
-Avec pip3:
+*** Installation (Python3)
+1. créer un virtualenv
+#+BEGIN_SRC bash
+virtualenv venv
+#+END_SRC
+
+2. utiliser le virtualenv
+#+BEGIN_SRC bash
+source venv/bin/activate
+#+END_SRC
+
+3. installer les dépendances (pip3)
 #+BEGIN_SRC bash
 pip install -r requirements.txt
 #+END_SRC
 
-*** Exemples d'utilisation
-- Récupérer la liste des notes disponibles (par id):
-#+BEGIN_SRC bash
-curl 127.0.0.1:8080/notes/
+4. lancer le service Redis
+#+BEGIN_SRC
+systemctl start redis
 #+END_SRC
 
+5. lancer le code
+#+BEGIN_SRC bash
+python3 main.py
+#+END_SRC
+
+*** Exemples
 - Créer une note:
 #+BEGIN_SRC bash
 curl -H "Content-Type:text/plain" --data 'Penser au pain' 127.0.0.1:8080/notes/
+#+END_SRC
+
+- Récupérer la liste des notes disponibles (par id):
+#+BEGIN_SRC bash
+curl 127.0.0.1:8080/notes/
 #+END_SRC
 
 - Lire une note:
 #+BEGIN_SRC bash
 curl http://localhost:8080/notes/{idnote}
 #+END_SRC
+
+* TODO
+- [ ] use hashes
+- [ ] delete by id
+- [ ] add author and date of creation, with JSON
+- [ ] add subscription
+- [ ] handle exceptions
+- [ ] warn for non-running services
